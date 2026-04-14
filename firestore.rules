@@ -1,0 +1,206 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Helper function to check if user is trying to create their own document
+    function isCreatingOwnDocument() {
+      return isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // AI TUTOR SESSIONS
+    // ===========================
+    match /tutorSessions/{sessionId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // MCQ PRACTICE SESSIONS
+    // ===========================
+    match /mcqSessions/{sessionId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // APTITUDE TRAINER SESSIONS
+    // ===========================
+    match /aptitudeSessions/{sessionId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // AI VIVA CHAIN SESSIONS
+    // ===========================
+    match /vivaSessions/{sessionId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // INTERVIEW ANALYSIS
+    // ===========================
+    match /interviewAnalysis/{analysisId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // USER PROGRESS (HEATMAP)
+    // ===========================
+    match /userProgress/{progressId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // COMPANY MODE PREFERENCES
+    // ===========================
+    match /userCompanyPreferences/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    // ===========================
+    // SMART REVISION
+    // ===========================
+    match /revisions/{revisionId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // MISTAKE MEMORY SYSTEM
+    // ===========================
+    match /mistakeMemory/{mistakeId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    match /spacedRepetition/{reviewId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // RESUME ANALYSIS
+    // ===========================
+    match /resumeAnalyses/{analysisId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    match /user_analysis/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    match /interviewPrepPlans/{planId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // INTERVIEW SUGGESTIONS
+    // ===========================
+    match /interviewSuggestions/{suggestionId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // ANSWER SCORING
+    // ===========================
+    match /answerScores/{scoreId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isCreatingOwnDocument();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // INTERVIEWS (VAPI SESSIONS)
+    // ===========================
+    match /interviews/{interviewId} {
+      allow read: if isAuthenticated() && resource.data.userid == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userid == request.auth.uid;
+      allow update: if isAuthenticated() && resource.data.userid == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userid == request.auth.uid;
+    }
+
+    // ===========================
+    // USER PROFILES
+    // ===========================
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    // ===========================
+    // FEEDBACK
+    // ===========================
+    match /feedback/{feedbackId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      // Only allow updates by the user who created it
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ===========================
+    // TODOS
+    // ===========================
+    match /todos/{userId}/items/{todoId} {
+      allow read, create, update, delete: if isOwner(userId);
+    }
+
+    // ===========================
+    // DEFAULT DENY ALL OTHER COLLECTIONS
+    // ===========================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
